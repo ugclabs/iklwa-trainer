@@ -1,0 +1,12 @@
+# Force LF line endings on everything text-based, no matter what platform
+# commits it. iklwa-trainer.sh and the other .sh files here have to run on
+# Kali/Linux -- if a Windows commit ever introduces CRLF line endings, the
+# shebang line breaks with "/usr/bin/env bash^M: bad interpreter" and every
+# script in this repo stops running until someone notices why. This is the
+# one-time fix that makes that impossible.
+* text=auto eol=lf
+
+*.sh text eol=lf
+*.md text eol=lf
+*.yml text eol=lf
+*.example text eol=lf

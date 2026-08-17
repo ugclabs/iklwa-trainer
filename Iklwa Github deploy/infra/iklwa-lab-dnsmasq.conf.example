@@ -1,0 +1,48 @@
+# /etc/dnsmasq.d/iklwa-lab.conf
+#
+# Iklwa Terminal Trainer, stage 4 — lab DNS zone.
+#
+# One box running dnsmasq answers for a fictional client domain and
+# doubles as every other host stage 4 needs. Edit the IP and domain below
+# if they differ from what's already set in iklwa-stage4-network-setup.sh —
+# the two files need to agree with each other.
+
+# Only answer on the lab network interface. This must never become an
+# open resolver reachable from anywhere outside the lab network.
+interface=eth0
+bind-interfaces
+listen-address=10.0.0.53
+
+# This box is authoritative for the lab domain.
+domain=isipingofreight.internal
+local=/isipingofreight.internal/
+
+# A record — the domain itself. This same box answers for everything
+# below too, since one machine is carrying all of stage 4's jobs.
+address=/isipingofreight.internal/10.0.0.53
+
+# CNAME — www is just an alias back to the same place.
+cname=www.isipingofreight.internal,isipingofreight.internal
+
+# MX record — mail "goes to" this same box. Nothing needs to actually
+# receive mail for the lesson to work; dig only needs a real answer to find.
+mx-host=isipingofreight.internal,isipingofreight.internal,10
+
+# TXT record — plant the day's finding here. Swap the text between intern
+# groups or re-runs if you don't want the answer memorized machine to machine.
+txt-record=isipingofreight.internal,"the note you want them to find goes here"
+
+# The "down" reachability target — a name that resolves, on purpose, to
+# an address nothing is listening on. Ping and traceroute genuinely fail
+# against it, which is the point of that block.
+address=/branch-office.isipingofreight.internal/10.0.0.99
+
+# Note on NS records: dnsmasq doesn't give you a way to hand-author a
+# custom NS record the way it does the four types above. Once this is
+# running, test what it actually returns:
+#   dig NS isipingofreight.internal @10.0.0.53
+# If that doesn't come back with anything satisfying, the honest fallback
+# is to teach it straight: there's exactly one nameserver in this lab,
+# and it's this box. "Who's authoritative for this domain" having a
+# one-word answer is still a real, correct lesson, just a smaller one
+# than the other four record types get.

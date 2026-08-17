@@ -1,0 +1,28 @@
+# /etc/systemd/system/iklwa-lab-http.service
+#
+# Iklwa Terminal Trainer, stage 4 — port-scan target.
+#
+# Runs the one open port the nmap block is supposed to find. Bound to the
+# lab DNS box itself (10.0.0.53 in the example config), so no second machine
+# is needed for this part of stage 4 -- see iklwa-stage4-network-setup-guide.md
+# section 2 for the rest of the lab-machine build.
+#
+# Install:
+#   cp iklwa-lab-http.service.example /etc/systemd/system/iklwa-lab-http.service
+#   systemctl daemon-reload
+#   systemctl enable --now iklwa-lab-http
+#
+# Edit the --bind address below first if your lab machine's address differs
+# from what's in iklwa-lab-dnsmasq.conf.example -- the two need to agree.
+
+[Unit]
+Description=Iklwa lab port-scan target (stage 4)
+After=network.target
+
+[Service]
+ExecStart=/usr/bin/python3 -m http.server 8080 --bind 10.0.0.53
+Restart=on-failure
+User=nobody
+
+[Install]
+WantedBy=multi-user.target

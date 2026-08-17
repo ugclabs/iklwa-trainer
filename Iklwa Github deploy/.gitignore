@@ -1,0 +1,16 @@
+# Submission bundles the trainer builds on a learner's machine -- these are
+# personal work product, never something that belongs back in this repo.
+iklwa-submission-*.tar.gz
+
+# Progress files, if anyone ever runs the trainer from inside a clone of
+# this repo itself rather than $HOME (they live in $HOME normally, but
+# this is a harmless safety net either way).
+.iklwa-trainer-progress-*
+
+# OS clutter
+.DS_Store
+Thumbs.db
+
+# Editor/IDE clutter
+*.swp
+.vscode/
